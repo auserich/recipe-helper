@@ -1,7 +1,9 @@
 package recipe_helper.model;
 
 import java.io.Serializable;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -9,6 +11,10 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 @Entity
 public class User implements Serializable {
@@ -38,12 +44,17 @@ public class User implements Serializable {
 	
 	@Column(nullable = false)
 	private String email;
+	
+	@JsonProperty(access = Access.WRITE_ONLY)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	private List<SavedRecipe> savedRecipe;
 
 	public User() {
 		super();
 	}
 
-	public User(Integer id, String username, String password, Role role, boolean enabled, String email) {
+	public User(Integer id, String username, String password, Role role, boolean enabled, String email,
+			List<SavedRecipe> savedRecipe) {
 		super();
 		this.id = id;
 		this.username = username;
@@ -51,6 +62,7 @@ public class User implements Serializable {
 		this.role = role;
 		this.enabled = enabled;
 		this.email = email;
+		this.savedRecipe = savedRecipe;
 	}
 
 	public Integer getId() {
@@ -101,9 +113,13 @@ public class User implements Serializable {
 		this.email = email;
 	}
 
-	@Override
-	public String toString() {
-		return "User [id=" + id + ", username=" + username + ", password=" + password + ", role=" + role + ", enabled="
-				+ enabled + ", email=" + email + "]";
+	public List<SavedRecipe> getSavedRecipe() {
+		return savedRecipe;
 	}
+
+	public void setSavedRecipe(List<SavedRecipe> savedRecipe) {
+		this.savedRecipe = savedRecipe;
+	}
+	
+	
 }
