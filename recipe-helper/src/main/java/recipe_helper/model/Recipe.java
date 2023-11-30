@@ -76,6 +76,4 @@ public class Recipe implements Serializable {
 	public void setSavedRecipe(List<SavedRecipe> savedRecipe) {
 		this.savedRecipe = savedRecipe;
 	}
-
-	
 }
